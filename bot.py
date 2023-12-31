@@ -30,7 +30,7 @@ def handle_message(update, context):
         for url in urls:
             result, line = check_url(url)
             if result:
-                context.bot.send_message(update.chat_id, line)
+                context.bot.send_message(chat_id=update.effective_chat.id, text=line)  # Atualização aqui
 
     if update.message.text.startswith("/cmd") or update.message.text.startswith("/ajuda"):
         commands = {
@@ -39,17 +39,17 @@ def handle_message(update, context):
             "/removeurl": "Remove uma URL da lista de URLs válidas.\n\nExemplos:\n\n* /removeurl https://www.example.com\n* /removeurl 123456789",
             "/addchannel": "Adiciona um canal para o bot entrar.\n\nExemplos:\n\n* /addchannel @my_channel\n* /addchannel 123456789",
         }
-        context.bot.send_message(update.chat_id, "Comandos disponíveis:\n" + "\n".join(f"* {key}: {value}" for key, value in commands.items()))
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Comandos disponíveis:\n" + "\n".join(f"* {key}: {value}" for key, value in commands.items()))  # Atualização aqui
 
     if update.message.text == "/addurl":
         url = update.message.reply_to_message.text
         urls.add(url)
-        context.bot.send_message(update.chat_id, "URL adicionada com sucesso.")
+        context.bot.send_message(chat_id=update.effective_chat.id, text="URL adicionada com sucesso.")  # Atualização aqui
 
     if update.message.text == "/removeurl":
         url = update.message.reply_to_message.text
         urls.remove(url)
-        context.bot.send_message(update.chat_id, "URL removida com sucesso.")
+        context.bot.send_message(chat_id=update.effective_chat.id, text="URL removida com sucesso.")  # Atualização aqui
 
     if update.message.text.startswith("/addchannel"):
         channel_id = update.message.reply_to_message.text
@@ -57,8 +57,9 @@ def handle_message(update, context):
             channel_id = channel_id[1:]
         channels.add(channel_id)
         context.bot.join_chat(channel_id)
-        context.bot.send_message(update.chat_id, "Canal adicionado com sucesso.")
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Canal adicionado com sucesso.")  # Atualização aqui
 
-updater = telegram.BotUpdater(token="6655452268:AAF3EiLH28rZd9_1QRdGJHq6DW8LYbmyWXY")
-updater.dispatcher.add_handler(telegram.MessageHandler(telegram.Filters.document, handle_message))
+updater = telegram.Updater(token="6655452268:AAF3EiLH28rZd9_1QRdGJHq6DW8LYbmyWXY", use_context=True)  # Atualização aqui
+dispatcher = updater.dispatcher  # Atualização aqui
+dispatcher.add_handler(telegram.MessageHandler(telegram.Filters.document, handle_message))
 updater.start_polling()
