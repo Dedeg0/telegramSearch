@@ -59,6 +59,6 @@ def handle_message(update, context):
         context.bot.join_chat(channel_id)
         context.bot.send_message(update.chat_id, "Canal adicionado com sucesso.")
 
-updater = telegram.BotUpdater(token="YOUR_TOKEN")
+updater = telegram.BotUpdater(token="6655452268:AAF3EiLH28rZd9_1QRdGJHq6DW8LYbmyWXY")
 updater.dispatcher.add_handler(telegram.MessageHandler(telegram.Filters.document, handle_message))
 updater.start_polling()
