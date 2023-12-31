@@ -1,0 +1,4 @@
+requests
+telegram
+io
+hashlib
